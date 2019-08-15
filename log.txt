@@ -1,0 +1,299 @@
+/*log for project 3: Mazes on the Web
+COP4531
+6/16/19
+*/
+
+URL: http://ww2.cs.fsu.edu/~lovoi/maze_demo/index.php
+
+6/16/19-6/17/19
+I read the notes for Disjoined sets and the video by Dr. Lacher in course organizer 
+to understand the partition structure and how it works. I also came up with
+a rough understanding of what the project requires for us to do by playing with
+the executables provided in area51 of the course library.
+
+6/18
+Today I started with the actualy implementation of the project. I copied al of the
+files requitred to be copied from the project LIB. I started off with
+working on ranmaze2t.cpp because it required 2 parts and 1 part was also the part
+which was required for ranmaze2w.cpp. I had to read the makefile to start off with 
+the files which needed to be included in the file. I did that for all of the 3 files 
+which are required in this project and decided to run the make command to make structure
+that at least the include statements in my file were correct. 
+Once that was taken care of, I started off with writing the partion sekeleton of the
+project provided in ranmaze section of the project document. I ran make command quite
+alot in this process and I will not mention it much for the rest of the document unless
+it is for some bug I found because it is implicit that make command to be ran every step
+of the way in this project. 
+First point  of business was the random number generator. Based off of the project document
+I used the fsu random object generator to generate numbers which gave back the current
+cell, and the direction to get the adjacent cell. I ran the executable to make sure that
+the random number generate was working correctly. Once the generator was working correctly
+I worked on the Connect function. Based off of my understanding connect function ran the 
+ranMaze part of the notes for disjoined Sets. It gets the random number for a cell, which
+is no greater than the number of total cells in the maze. Once it gets the random cell number
+the program gets another random number which decides the direction. Once the program gets 
+both the cell number and the direction it decides on the issue of a boundary wall. For example,
+if the program has a cell on the north size of the maze with north as direction, the randoom 
+number generator needs to run again to get another set of numbers for cell and direction because
+we do have have a north wall with an adjacent north cell.
+Once we have the correct cell and the direction, we can get the adjacent cell to decide if both
+cells are connect or not. If they are not connected then the program knocks out the wall between
+them and adds them to the solution partition. At this point I was hardcoding the names of the files
+to make sure that I am getting the correct result with the connect function.
+Next I worked on the WriteMaze functin which just wrote the wall of code to the output file
+so that file can be used in other executables. The basic premise of the function is to take the 
+the vector of maze with the numbers which represents the walls of each cell and run rows X columns
+and add the "wall of code" to a text file. It also writes the number of columns and rows along
+with the start and finish of the maze. 
+When I ran this "skeleton of code" I realzed that my only issue was the "wall of code" not being formatted
+properly as the output from area51. 
+I copied this code to the ranmaze2w.cpp file and hardcoded the name of the file to file.1 and had a 
+properly running and correct maze file from one of the executables. The second part of ranmaze2t was
+also simply calling the Writemaze function after the call to the second Connect function. Upon
+hardcoding the names of the files on both those files I had a running mazegenerator with correct Mazes.
+This was made sure by repeaded running of both executables and running the output file with mazerunner.x.
+ranmaze2t.x:
+lovoi@linprog8.cs.fsu.edu:~/cop4531/proj3> ranmaze2t.x 34 34 test
+Welcome to ranmaze.
+ numrows  = 34
+ numcols  = 34
+ numcells = 1156
+ start    = 578
+ goal     = 611
+ trace    = 0
+ components after 0 passes:   1156
+ components after 1 pass:     128
+ 1-pass maze written to file test.
+ components after all passes: 1
+ n-pass maze written to file test.1
+lovoi@linprog8.cs.fsu.edu:~/cop4531/proj3>
+
+
+running the ranmaze files through mazemaster:
+lovoi@linprog8.cs.fsu.edu:~/cop4531/proj3> mazemaster.x
+
+Welcome to mazemaster.
+
+Options: 1 = Initialize(), 2 = Consistent(), 3 = Solve() [D|B], 4 = Display() [1|2|3], x = go interactive, 0 = Quit
+Enter option: 1 test.4
+Enter maze file name (0 to quit): ** maze read successfully
+
+Options: 1 = Initialize(), 2 = Consistent(), 3 = Solve() [D|B], 4 = Display() [1|2|3], x = go interactive, 0 = Quit
+Enter option: 2
+** maze is self-consistent
+
+Options: 1 = Initialize(), 2 = Consistent(), 3 = Solve() [D|B], 4 = Display() [1|2|3], x = go interactive, 0 = Quit
+Enter option: 3 d
+** DFS solution is: 50 60 61 62 63 64 65 66 56 57 58 59
+
+Options: 1 = Initialize(), 2 = Consistent(), 3 = Solve() [D|B], 4 = Display() [1|2|3], x = go interactive, 0 = Quit
+Enter option: 4 1
+ _ _ _ _ _ _ _ _ _ _
+|   |  _   _| |  _  |
+|_|  _|    _ _ _ _| |
+| | | |_| |    _ _  |
+|  _ _|_ _|_|_| | |_|
+|_ _ _  |_|_  | | | |
+| |  _| | | |  _   _|
+|_ _   _   _ _ _| |_|
+|_ _ _|      _| |_| |
+|  _ _ _|_| |  _|  _|
+|_ _ _ _|_ _ _ _ _|_|
+
+ start cell: 50 [5,0]
+  goal cell: 59 [5,9]
+
+Options: 1 = Initialize(), 2 = Consistent(), 3 = Solve() [D|B], 4 = Display() [1|2|3], x = go interactive, 0 = Quit
+Enter option: 1 test.1
+Enter maze file name (0 to quit): ** maze read successfully
+
+Options: 1 = Initialize(), 2 = Consistent(), 3 = Solve() [D|B], 4 = Display() [1|2|3], x = go interactive, 0 = Quit
+Enter option: 2
+** maze is self-consistent
+
+Options: 1 = Initialize(), 2 = Consistent(), 3 = Solve() [D|B], 4 = Display() [1|2|3], x = go interactive, 0 = Quit
+Enter option: 3 d
+** DFS solution is: 50 60 61 62 63 64 65 66 56 57 58 59
+
+Options: 1 = Initialize(), 2 = Consistent(), 3 = Solve() [D|B], 4 = Display() [1|2|3], x = go interactive, 0 = Quit
+Enter option: d 1
+ _ _ _ _ _ _ _ _ _ _
+|   |  _   _| |  _  |
+|_|  _|    _ _ _ _| |
+| | | |_| |    _ _  |
+|  _ _|_ _|_|_| | |_|
+|_ _ _  |_ _  | | | |
+| |  _| | | |  _    |
+|_ _   _   _ _ _| |_|
+|_ _ _|      _| |_| |
+|  _ _ _|_| |  _|  _|
+|_ _ _ _|_ _ _ _ _ _|
+
+ start cell: 50 [5,0]
+  goal cell: 59 [5,9]
+
+Options: 1 = Initialize(), 2 = Consistent(), 3 = Solve() [D|B], 4 = Display() [1|2|3], x = go interactive, 0 = Quit
+Enter option:
+
+6/19/19
+Today I worked on solvemaze.cpp. The project document says to not reinvent the wheels so I strated off with
+reading graph_util and maze_util in the LIB to realize that there are many function which can be used in order to solve the
+maze. I realized that 
+template <typename N>
+bool LoadMaze (const char* mazefile, fsu::ALDGraph<N>& g, N& start, N& goal);
+function will read the maze file and put the maze into a graph. It also takes the graph, start and goal variables by
+reference, meaning all we have to do is Initialize the variables before the function call and the funciton will do the rest for us.
+secondly, to check the symmerty there is a function in graph_util:
+template < class G >
+bool CheckSymmetry (const G& g, bool verbose, std::ostream& os)
+this function again gives us an answer with a bool value if the graph is symmertric or not. 
+Lastly to work on the path from start to goal, as provided in the project I looked at Path_DFS function in graph_util.h function 
+in the LIB. 
+template < class G >
+bool Path_DFS (const G& g, typename G::Vertex x, typename G::Vertex y, fsu::List<typename G::Vertex>& path)
+Again, this function takes the graph, vertex, list of vertex by reference and returns if the path exists in the graph 
+or not. 
+This meant I had to initialize the Vertex and list structure:
+typename fsu::ALDGraph<size_t>::Vertex s(start), g(goal);
+fsu::List<fsu::ALDGraph<size_t>::Vertex> solution;
+Once I had everthing in place I called the DFS function with the following:
+if(!Path_DFS(graph, s, g, solution))
+        std::cout << " NO Solution\n";
+There were a few issues with the syntax while running make which were resolved without much issues. Lastly, I had to save the 
+new name of the file with file.number.dfs per area51 executable. 
+Next, the program copies the file.number file to the newly created dfs file as is using rdbuf() function. 
+Then the file is closed and opened again so a list iterator can append the list of vertex to the dfs file with the dfs solution.
+
+Next I worked on the name of the first fie in ranmaze2t.x. I used the for loop provided in the project document and saved
+the number in a string, only to realized that it was saving the numbers backwards. 
+I had to use fsu::swap to swap the numbers in the name of the file to save the numbers correctly. The correct numbers are appened
+to the name of the file and then the file with correct name is opened to so the wall of code can be saved in it.
+
+This basically finished the linprog part of the project. Here are some of the results of the project:
+Make:
+lovoi@linprog8.cs.fsu.edu:~/cop4531/proj3> clean .
+rm: cannot remove ‘./*~’: No such file or directory
+rm: cannot remove ‘./core.*’: No such file or directory
+lovoi@linprog8.cs.fsu.edu:~/cop4531/proj3> make
+g++ -std=c++11 -Wall -Wextra -I. -I/home/courses/cop4531p/LIB/cpp -I/home/courses/cop4531p/LIB/tcpp -I/home/courses/cop4531p/LIB/graph -osolvemaze.x solvemaze.cpp
+g++ -std=c++11 -Wall -Wextra -I. -I/home/courses/cop4531p/LIB/cpp -I/home/courses/cop4531p/LIB/tcpp -I/home/courses/cop4531p/LIB/graph -c ranmaze2t.cpp
+g++ -std=c++11 -Wall -Wextra -I. -I/home/courses/cop4531p/LIB/cpp -I/home/courses/cop4531p/LIB/tcpp -I/home/courses/cop4531p/LIB/graph -c /home/courses/cop4531p/LIB/cpp/xran.cpp
+g++ -std=c++11 -Wall -Wextra -I. -I/home/courses/cop4531p/LIB/cpp -I/home/courses/cop4531p/LIB/tcpp -I/home/courses/cop4531p/LIB/graph -o ranmaze2t.x ./xran.o ./ranmaze2t.o
+g++ -std=c++11 -Wall -Wextra -I. -I/home/courses/cop4531p/LIB/cpp -I/home/courses/cop4531p/LIB/tcpp -I/home/courses/cop4531p/LIB/graph -c ranmaze2w.cpp
+g++ -std=c++11 -Wall -Wextra -I. -I/home/courses/cop4531p/LIB/cpp -I/home/courses/cop4531p/LIB/tcpp -I/home/courses/cop4531p/LIB/graph -o ranmaze2w.x ./xran.o ./ranmaze2w.o
+cc -O2 -g mazeprint.c -o printmaze.x -lm
+cp /home/courses/cop4531p/LIB/area51/agraph_i.x ./agraph.x
+chmod 700 agraph.x
+g++ -std=c++11 -Wall -Wextra -I. -I/home/courses/cop4531p/LIB/cpp -I/home/courses/cop4531p/LIB/tcpp -I/home/courses/cop4531p/LIB/graph -ofpath.x /home/courses/cop4531p/LIB/graph/fpath.cpp
+g++ -std=c++11 -Wall -Wextra -I. -I/home/courses/cop4531p/LIB/cpp -I/home/courses/cop4531p/LIB/tcpp -I/home/courses/cop4531p/LIB/graph -ofsymm.x /home/courses/cop4531p/LIB/graph/fsymm.cpp
+g++ -std=c++11 -Wall -Wextra -I. -I/home/courses/cop4531p/LIB/cpp -I/home/courses/cop4531p/LIB/tcpp -I/home/courses/cop4531p/LIB/graph -omaze2graph.x /home/courses/cop4531p/LIB/graph/maze2graph.cpp
+cp /home/courses/cop4531p/LIB/area51/mazemaster_i.x ./mazemaster.x
+chmod 700 mazemaster.x
+cp /home/courses/cop4531p/LIB/area51/rangraph_i.x ./rangraph.x
+chmod 700 rangraph.x
+lovoi@linprog8.cs.fsu.edu:~/cop4531/proj3>
+ranmaze2t.x:
+lovoi@linprog8.cs.fsu.edu:~/cop4531/proj3> ranmaze2t.x 10 10 test
+Welcome to ranmaze.
+ numrows  = 10
+ numcols  = 10
+ numcells = 100
+ start    = 50
+ goal     = 59
+ trace    = 0
+ components after 0 passes:   100
+ components after 1 pass:     5
+ 1-pass maze written to file test.5
+ components after all passes: 1
+ n-pass maze written to file test.1
+lovoi@linprog8.cs.fsu.edu:~/cop4531/proj3>
+
+Contents of test.5:
+lovoi@linprog8.cs.fsu.edu:~/cop4531/proj3> more test.5
+        10      10
+        9       5       3       9       7       9       5       5       7       11
+        14      13      0       4       5       6       9       1       1       6
+        11      13      4       3       13      5       6       10      12      3
+        14      9       1       4       5       3       11      14      9       6
+        9       6       12      7       13      4       4       1       4       7
+        12      5       5       1       5       3       13      4       5       3
+        15      13      5       2       11      12      3       13      3       14
+        11      13      5       2       12      5       0       5       4       7
+        12      5       5       0       7       13      0       5       5       7
+        13      5       7       14      13      5       4       5       7       15
+        50      59
+lovoi@linprog8.cs.fsu.edu:~/cop4531/proj3>
+
+solvemaze.x:
+lovoi@linprog8.cs.fsu.edu:~/cop4531/proj3> solvemaze.x test.5
+Solution found has 14 cells
+Maze and solution written to file "test.5.dfs"
+lovoi@linprog8.cs.fsu.edu:~/cop4531/proj3>
+
+Contents of test.5.dfs:
+lovoi@linprog8.cs.fsu.edu:~/cop4531/proj3> more test.5.dfs
+        10      10
+        9       5       3       9       7       9       5       5       7       11
+        14      13      0       4       5       6       9       1       1       6
+        11      13      4       3       13      5       6       10      12      3
+        14      9       1       4       5       3       11      14      9       6
+        9       6       12      7       13      4       4       1       4       7
+        12      5       5       1       5       3       13      4       5       3
+        15      13      5       2       11      12      3       13      3       14
+        11      13      5       2       12      5       0       5       4       7
+        12      5       5       0       7       13      0       5       5       7
+        13      5       7       14      13      5       4       5       7       15
+        50      59
+
+ 50 40 41 31 32 33 34 35 45 46 47 57 58 59
+lovoi@linprog8.cs.fsu.edu:~/cop4531/proj3>
+
+Here is the output of mazemaster.x which takes in test.5 from the previous output and
+gives the DFS solution, which is the same as the output for test.3.dfs:
+lovoi@linprog8.cs.fsu.edu:~/cop4531/proj3> mazemaster.x
+Welcome to mazemaster.
+Options: 1 = Initialize(), 2 = Consistent(), 3 = Solve() [D|B], 4 = Display() [1|2|3], x = go interactive, 0 = Quit
+Enter option: 1 test.5
+Enter maze file name (0 to quit): ** maze read successfully
+
+Options: 1 = Initialize(), 2 = Consistent(), 3 = Solve() [D|B], 4 = Display() [1|2|3], x = go interactive, 0 = Quit
+Enter option: 2
+** maze is self-consistent
+
+Options: 1 = Initialize(), 2 = Consistent(), 3 = Solve() [D|B], 4 = Display() [1|2|3], x = go interactive, 0 = Quit
+Enter option: 3 d
+** DFS solution is: 50 40 41 31 32 33 34 35 45 46 47 57 58 59
+
+Options: 1 = Initialize(), 2 = Consistent(), 3 = Solve() [D|B], 4 = Display() [1|2|3], x = go interactive, 0 = Quit
+Enter option: d 1
+ _ _ _ _ _ _ _ _ _ _
+|  _  |  _|  _ _ _| |
+|_|_   _ _ _|      _|
+| |_ _  |_ _ _| |_  |
+|_|    _ _  | |_|  _|
+|  _|_ _|_ _ _   _ _|
+|_ _ _   _  |_ _ _  |
+|_|_ _  | |_  |_  |_|
+| |_ _  |_ _   _ _ _|
+|_ _ _   _|_   _ _ _|
+|_ _ _|_|_ _ _ _ _|_|
+
+ start cell: 50 [5,0]
+  goal cell: 59 [5,9]
+
+Options: 1 = Initialize(), 2 = Consistent(), 3 = Solve() [D|B], 4 = Display() [1|2|3], x = go interactive, 0 = Quit
+Enter option: 0
+
+Thank you for using mazemaster.
+
+lovoi@linprog8.cs.fsu.edu:~/cop4531/proj3>
+
+6/20/19
+Today I worked on the visualization part of the project. I started off with copying the 3 executables from linprog
+to ww2 server. At this point, I would like to point out that my ww2 account was already active since I had to 
+use it in fall 2018 for CEN4020 for the final project. 
+I changed the permission of maze_demo to 777. Next inside the maze_demo folder I changed the permission of all of the
+executables and mazegen.sh to 755.
+I had some issues with the permissions at first, but it was finally resolved, resulting in the proper execution of the 
+maze generator on the ww2 server.
+
